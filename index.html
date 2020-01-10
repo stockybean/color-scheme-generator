@@ -16,24 +16,85 @@
     </h1>
 
     <label class="block max-w-lg mx-auto mb-12 px-4">
-        <span class="text-lg">Brand Color</span>
-
         <div class="flex">
-            <input type="text"
-                autocomplete="off"
-                autofocus
-                class="flex-1 px-4 py-2 rounded-l text-2xl"
-                :placeholder="brand"
-                v-model="colorInputValue"
-            >
-
-            <button type="button"
-                class="bg-gray-100 px-5 rounded-r"
-                title="Randomize"
-                @click="colorInputValue = getRandomColor()"
-            >
-                <i class="fas fa-random"></i>
-            </button>
+            <div class="flex flex-col">
+                <span class="text-lg">Brand Color</span>
+        
+                <input type="text"
+                    autocomplete="off"
+                    autofocus
+                    class="flex-1 px-4 py-2 rounded-l text-2xl"
+                    :placeholder="brand"
+                    v-model="colorInputValue"
+                >
+            </div>
+            
+            <div class="flex flex-col">
+                <span class="text-lg">Percent Mix</span>
+                <input type="number"
+                    autocomplete="off"
+                    autofocus
+                    min="0.1"
+                    max="1"
+                    step="0.1"
+                    class="w-32 px-4 py-2 rounded-l text-2xl"
+                    :placeholder="percent"
+                    v-model="percentInputValue"
+                >
+            </div>
+    
+            <div class="flex flex-col">
+                <span class="text-lg">CTA Hue Shift</span>
+                <div class="flex">
+                    <input type="number"
+                        autocomplete="off"
+                        autofocus
+                        min="0"
+                        max="255"
+                        class="w-32 px-4 py-2 rounded-l text-2xl"
+                        :placeholder="ctaHueShift"
+                        v-model="ctaHueInputValue"
+                    >
+        
+                    <button type="button"
+                        class="bg-gray-100 px-5 rounded-r"
+                        title="Randomize"
+                        @click="colorInputValue = getRandomColor()"
+                    >
+                        <i class="fas fa-random"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="flex">
+            <div class="flex flex-col">
+                <span class="text-lg">Tint Shift</span>
+        
+                <input type="number"
+                    autocomplete="off"
+                    autofocus
+                    min="0.1"
+                    max="1"
+                    step="0.05"
+                    class="w-32 px-4 py-2 rounded-l text-2xl"
+                    :placeholder="tintShift"
+                    v-model="tintInputValue"
+                >
+            </div>
+            
+            <div class="flex flex-col">
+                <span class="text-lg">Shade Shift</span>
+                <input type="number"
+                    autocomplete="off"
+                    autofocus
+                    min="0.1"
+                    max="1"
+                    step="0.05"
+                    class="w-32 px-4 py-2 rounded-l text-2xl"
+                    :placeholder="shadeShift"
+                    v-model="shadeInputValue"
+                >
+            </div>
         </div>
     </label>
 
@@ -44,9 +105,11 @@
                 <span v-text="color.name"></span>
 
                 <div class="flex flex-col h-32 overflow-hidden rounded">
-                    <span :style="{ backgroundColor: tint(color.value.hex()).hex() }" class="h-6"></span>
+                    <span :style="{ backgroundColor: tint(color.value.hex(), 0.15).hex() }" class="h-5"></span>
+                    <span :style="{ backgroundColor: tint(color.value.hex(), 0.75).hex() }" class="h-5"></span>
                     <span :style="{ backgroundColor: color.value.hex() }" class="flex-1"></span>
-                    <span :style="{ backgroundColor: shade(color.value.hex()).hex() }" class="h-6"></span>
+                    <span :style="{ backgroundColor: shade(color.value.hex(), 0.45).hex() }" class="h-5"></span>
+                    <span :style="{ backgroundColor: shade(color.value.hex(), 0.25).hex() }" class="h-5"></span>
                 </div>
             </div>
         </div>
@@ -82,9 +145,11 @@
                 <span v-for="(gray, id) in grays" class="whitespace-no-wrap">'{{ id }}': '{{ gray.value.hex() }}',<br></span><br>
 
                 <span v-for="(color, id) in colors" class="whitespace-no-wrap">
-                    '{{ id }}-light': '{{ tint(color.value).hex() }}',<br>
+                    '{{ id }}-lighter': '{{ tint(color.value, 0.15).hex() }}',<br>
+                    '{{ id }}-light': '{{ tint(color.value, 0.75).hex() }}',<br>
                     '{{ id }}': '{{ color.value.hex() }}',<br>
-                    '{{ id }}-dark': '{{ shade(color.value).hex() }}',<br><br>
+                    '{{ id }}-dark': '{{ shade(color.value, 0.45).hex() }}',<br>
+                    '{{ id }}-darker': '{{ shade(color.value, 0.25).hex() }}',<br><br>
                 </span>
             </div>
 
@@ -93,9 +158,11 @@
                 <span v-for="(gray, id) in grays" class="whitespace-no-wrap">${{ id }}: {{ gray.value.hex() }}<br></span><br>
 
                 <span v-for="(color, id) in colors" class="whitespace-no-wrap">
-                    ${{ id }}-light: {{ tint(color.value).hex() }}<br>
+                    ${{ id }}-lighter: {{ tint(color.value, 0.15).hex() }}<br>
+                    ${{ id }}-light: {{ tint(color.value, 0.75).hex() }}<br>
                     ${{ id }}: {{ color.value.hex() }}<br>
-                    ${{ id }}-dark: {{ shade(color.value).hex() }}<br><br>
+                    ${{ id }}-dark: {{ shade(color.value, 0.45).hex() }}<br>
+                    ${{ id }}-darker: {{ shade(color.value, 0.25).hex() }}<br><br>
                 </span>
             </div>
 
@@ -104,20 +171,11 @@
                 <span v-for="(gray, id) in grays" class="whitespace-no-wrap">${{ id }}: {{ gray.value.hex() }};<br></span><br>
 
                 <span v-for="(color, id) in colors" class="whitespace-no-wrap">
-                    ${{ id }}-light: {{ tint(color.value).hex() }};<br>
+                    ${{ id }}-lighter: {{ tint(color.value, 0.15).hex() }};<br>
+                    ${{ id }}-light: {{ tint(color.value, 0.75).hex() }};<br>
                     ${{ id }}: {{ color.value.hex() }};<br>
-                    ${{ id }}-dark: {{ shade(color.value).hex() }};<br><br>
-                </span>
-            </div>
-
-            <!-- LESS -->
-            <div v-if="activeTab === 'less'" class="overflow-x-scroll">
-                <span v-for="(gray, id) in grays" class="whitespace-no-wrap">@{{ id }}: {{ gray.value.hex() }};<br></span><br>
-
-                <span v-for="(color, id) in colors" class="whitespace-no-wrap">
-                    @{{ id }}-light: {{ tint(color.value).hex() }};<br>
-                    @{{ id }}: {{ color.value.hex() }};<br>
-                    @{{ id }}-dark: {{ shade(color.value).hex() }};<br><br>
+                    ${{ id }}-dark: {{ shade(color.value, 0.45).hex() }};<br>
+                    ${{ id }}-darker: {{ shade(color.value, 0.25).hex() }};<br><br>
                 </span>
             </div>
         </div>

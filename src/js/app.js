@@ -13,6 +13,10 @@ new Vue({
     data: {
         activeTab: null,
         colorInputValue: '',
+        percentInputValue: '0.4',
+        ctaHueInputValue: '150',
+        tintInputValue: '.25',
+        shadeInputValue: '.5',
         tabs: [
             {
                 id: 'tailwind',
@@ -26,10 +30,6 @@ new Vue({
                 id: 'scss',
                 title: 'SCSS',
             },
-            {
-                id: 'less',
-                title: 'Less',
-            },
         ],
     },
 
@@ -40,6 +40,22 @@ new Vue({
                 : chroma(this.colorInputValue);
         },
 
+        percent() {
+            return this.percentInputValue;
+        },
+
+        ctaHueShift() {
+            return this.ctaHueInputValue;
+        },
+
+        tintShift() {
+            return this.tintInputValue;
+        },
+
+        shadeShift() {
+            return this.shadeInputValue;
+        },
+
         colors() {
             return {
                 'brand': {
@@ -48,23 +64,23 @@ new Vue({
                 },
                 'cta': {
                     name: 'CTA',
-                    value: this.brand.set('hsl.h', '+150'),
+                    value: this.brand.set('hsl.h', + this.ctaHueShift),
                 },
                 'info': {
                     name: 'Info',
-                    value: chroma.mix('#3df', this.brand, .2, 'lab'),
+                    value: chroma.mix('#3df', this.brand, this.percent, 'lab'),
                 },
                 'warning': {
                     name: 'Warning',
-                    value: chroma.mix('#fd0', this.brand, .2, 'lab'),
+                    value: chroma.mix('#fd0', this.brand, this.percent, 'lab'),
                 },
                 'success': {
                     name: 'Success',
-                    value: chroma.mix('#3e4', this.brand, .2, 'lab'),
+                    value: chroma.mix('#3e4', this.brand, this.percent, 'lab'),
                 },
                 'danger': {
                     name: 'Danger',
-                    value: chroma.mix('#f34', this.brand, .2, 'lab'),
+                    value: chroma.mix('#f34', this.brand, this.percent, 'lab'),
                 },
             };
         },
@@ -77,35 +93,35 @@ new Vue({
                 },
                 'gray-lightest': {
                     name: 'gray Lightest',
-                    value: chroma.mix('#fafafa', this.brand, .01, 'lab'),
+                    value: chroma.mix('#fafafa', this.brand, .02, 'lab'),
                 },
                 'gray-lighter': {
                     name: 'gray Lighter',
-                    value: chroma.mix('#e6e6e6', this.brand, .01, 'lab'),
+                    value: chroma.mix('#e6e6e6', this.brand, .02, 'lab'),
                 },
                 'gray-light': {
                     name: 'gray Light',
-                    value: chroma.mix('#d2d2d2', this.brand, .01, 'lab'),
+                    value: chroma.mix('#d2d2d2', this.brand, .02, 'lab'),
                 },
                 'gray': {
                     name: 'gray',
-                    value: chroma.mix('#bfbfbf', this.brand, .01, 'lab'),
+                    value: chroma.mix('#bfbfbf', this.brand, .02, 'lab'),
                 },
                 'gray-dark': {
                     name: 'gray Dark',
-                    value: chroma.mix('#979797', this.brand, .01, 'lab'),
+                    value: chroma.mix('#979797', this.brand, .02, 'lab'),
                 },
                 'gray-darker': {
                     name: 'gray Darker',
-                    value: chroma.mix('#6f6f6f', this.brand, .01, 'lab'),
+                    value: chroma.mix('#6f6f6f', this.brand, .02, 'lab'),
                 },
                 'gray-darkest': {
                     name: 'gray Darkest',
-                    value: chroma.mix('#484848', this.brand, .01, 'lab'),
+                    value: chroma.mix('#484848', this.brand, .02, 'lab'),
                 },
                 'black': {
                     name: 'Black',
-                    value: chroma.mix('#202020', this.brand, .01, 'lab'),
+                    value: chroma.mix('#202020', this.brand, .02, 'lab'),
                 },
             };
         },
@@ -121,12 +137,12 @@ new Vue({
             return chroma.random();
         },
 
-        tint(hex) {
-            return chroma.mix('#fff', hex, .25, 'lab');
+        tint(hex, factor) {
+            return chroma.mix('#fff', hex, factor, 'lab');
         },
 
-        shade(hex) {
-            return chroma.mix('#000', hex, .5, 'lab');
+        shade(hex, factor) {
+            return chroma.mix('#000', hex, factor, 'lab');
         },
     },
 });
