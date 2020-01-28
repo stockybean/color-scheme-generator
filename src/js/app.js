@@ -14,9 +14,12 @@ new Vue({
         activeTab: null,
         colorInputValue: '',
         percentInputValue: '0.4',
+        grayPercentInputValue: '0.2',
         ctaHueInputValue: '150',
-        tintInputValue: '.25',
-        shadeInputValue: '.5',
+        tintOneInputValue: '.1',
+        tintTwoInputValue: '.3',
+        shadeOneInputValue: '.55',
+        shadeTwoInputValue: '.3',
         tabs: [
             {
                 id: 'tailwind',
@@ -44,16 +47,28 @@ new Vue({
             return this.percentInputValue;
         },
 
+        grayPercent() {
+            return this.grayPercentInputValue;
+        },
+
         ctaHueShift() {
             return this.ctaHueInputValue;
         },
 
-        tintShift() {
-            return this.tintInputValue;
+        tintOneShift() {
+            return this.tintOneInputValue;
         },
 
-        shadeShift() {
-            return this.shadeInputValue;
+        tintTwoShift() {
+            return this.tintTwoInputValue;
+        },
+
+        shadeOneShift() {
+            return this.shadeOneInputValue;
+        },
+
+        shadeTwoShift() {
+            return this.shadeTwoInputValue;
         },
 
         colors() {
@@ -93,35 +108,35 @@ new Vue({
                 },
                 'gray-lightest': {
                     name: 'gray Lightest',
-                    value: chroma.mix('#fafafa', this.brand, .02, 'lab'),
+                    value: chroma.mix('rgb(253, 253, 253)', this.brand, this.grayPercent, 'lab'),
                 },
                 'gray-lighter': {
                     name: 'gray Lighter',
-                    value: chroma.mix('#e6e6e6', this.brand, .02, 'lab'),
+                    value: chroma.mix('rgb(225, 225, 225)', this.brand, this.grayPercent, 'lab'),
                 },
                 'gray-light': {
                     name: 'gray Light',
-                    value: chroma.mix('#d2d2d2', this.brand, .02, 'lab'),
+                    value: chroma.mix('rgb(194, 194, 194)', this.brand, this.grayPercent, 'lab'),
                 },
                 'gray': {
                     name: 'gray',
-                    value: chroma.mix('#bfbfbf', this.brand, .02, 'lab'),
+                    value: chroma.mix('rgb(163, 163, 163)', this.brand, this.grayPercent, 'lab'),
                 },
                 'gray-dark': {
                     name: 'gray Dark',
-                    value: chroma.mix('#979797', this.brand, .02, 'lab'),
+                    value: chroma.mix('rgb(133, 133, 133)', this.brand, this.grayPercent, 'lab'),
                 },
                 'gray-darker': {
                     name: 'gray Darker',
-                    value: chroma.mix('#6f6f6f', this.brand, .02, 'lab'),
+                    value: chroma.mix('rgb(96, 96, 96)', this.brand, this.grayPercent, 'lab'),
                 },
                 'gray-darkest': {
                     name: 'gray Darkest',
-                    value: chroma.mix('#484848', this.brand, .02, 'lab'),
+                    value: chroma.mix('rgb(60, 60, 60)', this.brand, this.grayPercent, 'lab'),
                 },
                 'black': {
                     name: 'Black',
-                    value: chroma.mix('#202020', this.brand, .02, 'lab'),
+                    value: chroma.mix('rgb(30, 30, 30)', this.brand, this.grayPercent, 'lab'),
                 },
             };
         },
